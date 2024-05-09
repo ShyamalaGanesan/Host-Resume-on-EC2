@@ -8,20 +8,21 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to EC2 on master branch push
+    name: Push to EC2 Instance
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout the files
-        uses: actions/checkout@v2
+      - name: Checkout the code
+        uses: actions/checkout@v1
 
-      - name: Deploy to Server 1
-        uses: easingthemes/ssh-deploy@main
+      - name: Deploy to my EC2 instance
+        uses: easingthemes/ssh-deploy@v2.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.HOST_DNS }}
-          REMOTE_USER: ${{ secrets.USERNAME }}
-          TARGET: ${{ secrets.TARGET_DIR }}
+          SOURCE: "./"
+          REMOTE_HOST: "ec2-54-81-80-228.compute-1.amazonaws.com"
+          REMOTE_USER: "ubuntu"
+          TARGET: "/home"
 
       - name: Executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
